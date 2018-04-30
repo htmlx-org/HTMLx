@@ -80,19 +80,100 @@ Text can also contain JavaScript expressions:
 <p>{a} + {b} = {a + b}.</p>
 ```
 
+### HTML expressions
+
+In a text expression, characters like `<` and `>` are escaped. An expression can inject HTML with `{@html expression}`:
+
+```html
+<div class='blog-post'>
+  <h1>{post.title}</h1>
+  {@html post.content}
+</div>
+```
+
+Whether or not `post.content` is sanitized is up to the framework, rather than a concern of HTMLx.
+
 
 ### Control flow
 
-TODO
+Content that is conditionally rendered can be wrapped in an `{#if condition}` block, where `condition` is any valid JavaScript expression:
+
+```html
+{#if answer === 42}
+  <p>what was the question?</p>
+{/if}
+```
+
+Additional conditions can be added with `{:elseif condition}`, optionally ending in an `{:else}` clause:
+
+```html
+{#if porridge.temperature > 100}
+  <p>too hot!</p>
+{:elseif 80 > porridge.temperature}
+  <p>too cold!</p>
+{:else}
+  <p>just right!</p>
+{/if}
+```
+
+Iterating over lists of values can be done with an `{#each list as item}` block, where `list` is any valid JavaScript expression and `item` is a valid JavaScript identifier, or a destructuring pattern.
+
+```html
+<h1>Cats of YouTube</h1>
+<ul>
+  {#each cats as cat}
+    <li><a target="_blank" href={cat.video}>{cat.name}</a></li>
+  {/each}
+</ul>
+```
+
+An `#each` block can also specify an *index*, equivalent to the second argument in an `array.map(...)` callback:
+
+```html
+{#each items as item, i}
+  <p>{i}: {item.name}</p>
+{/each}
+```
+
+It can also specify a *key expression* in parentheses — again, any valid JavaScript expression — which is typically used for list diffing when items are added or removed from the middle of the list:
+
+```html
+{#each items as item (item.id)}
+  <p>{item.name}</p>
+{/each}
+```
+
+An `#each` block can also have an `{:else}` clause, which is rendered if the list is empty:
+
+```html
+{#each shoppingCart as item}
+  <p>{item.name}</p>
+{:else}
+  <p>Your shopping cart is empty!</p>
+{/each}
+```
+
+*TODO: Svelte also has `await` blocks — does this section need more flexibility?*
+
 
 ### Directives
 
-TODO
+A framework may support *directives* on elements and components for declaratively adding event listeners, transitions and so on. The general form is `type:name=value` — the `:` character distinguishes directives from attributes.
+
+For example, a `click` event listener could be added with an `on:click` directive:
+
+```html
+<button on:click=handleClick() >click me!</button>
+```
+
+Not all directives need a value — for example, Svelte has a `ref:name` directive which populates a `component.refs` object with elements and components. For those that do take a value, it should be a valid JavaScript expression (without curly braces). As with attributes, the value can be quoted, and the quotes will not affect how the directive value is parsed:
+
+```html
+<button on:click="handleClick({ foo: bar })">click me!</button>
+```
 
 ### script/style
 
-TODO
+An HTMLx string could include `<script>` and `<style>` tags. The contents of these tags must *not* be interpolated, but must instead be preserved as typed.
 
-### Inline HTML
-
-TODO
+What happens to the contents of those tags is up to the framework.

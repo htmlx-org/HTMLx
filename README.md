@@ -70,6 +70,14 @@ It's often necessary to pass a property to an element or component directly, so 
 <button {disabled}>...</button>
 ```
 
+*Spread attributes* allow many attributes or properties to be passed to an element or component at once:
+
+```html
+<Widget {...things}/>
+```
+
+An element or component can have multiple spread attributes, interspersed with regular ones.
+
 
 ### Text expressions
 

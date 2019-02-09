@@ -35,14 +35,14 @@ By default, attributes work exactly like their HTML counterparts:
 
 ```html
 <div class="foo">
-  <button disabled >can't touch this</button>
+  <button disabled>can't touch this</button>
 </div>
 ```
 
 As in HTML, values may be unquoted:
 
 ```html
-<input type=checkbox >
+<input type=checkbox>
 ```
 
 Attribute values can contain JavaScript expressions:
@@ -93,7 +93,7 @@ Text can also contain JavaScript expressions:
 In a text expression, characters like `<` and `>` are escaped. An expression can inject HTML with `{@html expression}`:
 
 ```html
-<div class='blog-post'>
+<div class="blog-post">
   <h1>{post.title}</h1>
   {@html post.content}
 </div>
@@ -166,18 +166,18 @@ An `#each` block can also have an `{:else}` clause, which is rendered if the lis
 
 ### Directives
 
-A framework may support *directives* on elements and components for declaratively adding event listeners, transitions and so on. The general form is `type:name=value` — the `:` character distinguishes directives from attributes.
+A framework may support *directives* on elements and components for declaratively adding event listeners, transitions and so on. The general form is `type:name={value}` — the `:` character distinguishes directives from attributes.
 
 For example, a `click` event listener could be added with an `on:click` directive:
 
 ```html
-<button on:click=handleClick() >click me!</button>
+<button on:click={handleClick}>click me!</button>
 ```
 
-Not all directives need a value — for example, Svelte has a `ref:name` directive which populates a `component.refs` object with elements and components. For those that do take a value, it should be a valid JavaScript expression (without curly braces). As with attributes, the value can be quoted, and the quotes will not affect how the directive value is parsed:
+As with attributes, the value can be quoted, and the quotes will not affect how the directive value is parsed:
 
 ```html
-<button on:click="handleClick({ foo: bar })">click me!</button>
+<input on:change="{e => alert(`the value is ${e.target.value}`)}">
 ```
 
 ### script/style

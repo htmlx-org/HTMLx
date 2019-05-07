@@ -112,12 +112,12 @@ Content that is conditionally rendered can be wrapped in an `{#if condition}` bl
 {/if}
 ```
 
-Additional conditions can be added with `{:elseif condition}`, optionally ending in an `{:else}` clause:
+Additional conditions can be added with `{:else if condition}`, optionally ending in an `{:else}` clause:
 
 ```html
 {#if porridge.temperature > 100}
   <p>too hot!</p>
-{:elseif 80 > porridge.temperature}
+{:else if 80 > porridge.temperature}
   <p>too cold!</p>
 {:else}
   <p>just right!</p>
